@@ -1,0 +1,105 @@
+.mt-3 {
+  margin-top: 3px;
+}
+
+.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-lg {
+  margin-top: 10px;
+}
+
+.mb-3 {
+  margin-bottom: 3px;
+}
+
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.mb-lg {
+  margin-bottom: 10px;
+}
+
+form {
+  margin: 0 auto 0 auto;
+  padding: 30px;
+  width: 400px;
+  height: auto;
+  overflow: hidden;
+  background: white;
+  border-radius: 10px;
+}
+
+form label {
+  font-size: 14px;
+  color: darkgray;
+  cursor: pointer;
+}
+
+form input,
+textarea {
+  margin: 15px 0;
+  padding: 15px 10px;
+  width: 100%;
+  outline: none;
+  border: 1px solid #bbb;
+  border-radius: 20px;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -ms-transition: 0.2s ease all;
+  -o-transition: 0.2s ease all;
+  transition: 0.2s ease all;
+}
+
+form input[type='text']:focus,
+form input[type='password']:focus,
+form textarea:focus {
+  border-color: cornflowerblue;
+}
+
+button {
+  padding: 15px 50px;
+  width: auto;
+  background: #1abc9c;
+  border: none;
+  color: white;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -ms-transition: 0.2s ease all;
+  -o-transition: 0.2s ease all;
+  transition: 0.2s ease all;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+button:active {
+  opacity: 0.4;
+}
+
+#logo {
+  margin: 0 auto;
+  width: 200px;
+  font-family: 'Lily Script One', cursive;
+  font-size: 45px;
+  font-weight: bold;
+  text-align: center;
+  color: lightgray;
+  -webkit-transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -ms-transition: 0.2s ease all;
+  -o-transition: 0.2s ease all;
+  transition: 0.2s ease all;
+}
+
+#logo:hover {
+  color: cornflowerblue;
+}

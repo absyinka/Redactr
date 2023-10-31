@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redactr</title>
+    <link rel="stylesheet" href="app.css">
+    <script src="redactr.js" defer="defer"></script>
+</head>
+
+<body>
+
+    <form id="redactForm">
+
+        <h3 id="logo" class="mb-5">Redactr</h3>
+
+        <div class="mb-5">
+            <label for="message" class="mb-3">Message</label>
+            <textarea id="message" cols="30" rows="10"></textarea>
+        </div>
+
+        <div class="mb-5">
+            <label for="words" class="mb-3">Word(s) to redact</label>
+            <input type="text" id="words" placeholder="Enter words to redact separated by comma">
+        </div>
+
+        <div class="mb-5">
+            <label for="redactCharacters" class="mb-3">Replacement string</label>
+            <input type="text" id="redactCharacters"
+                placeholder="Enter string to redact words. e.g: *** or ???? or anon">
+        </div>
+
+        <button type="button" id="submitButton" class="mb-lg">Redact Now</button>
+        <hr>
+
+        <div id="redactrOutput" class="mt-5 mb-lg" style="visibility: hidden;">Redacted Output: </div>
+
+        <div id="stats" class="mt-5 mb-lg" style="visibility: hidden;"></div>
+
+    </form>
+
+</body>
+
+</html>
