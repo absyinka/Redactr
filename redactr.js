@@ -3,6 +3,7 @@ document
   .addEventListener('click', function (event) {
     event.preventDefault()
 
+    const startTime = performance.now()
     const messageField = document.getElementById('message').value.trim()
     const wordsField = document.getElementById('words').value.trim()
     const redactCharsField = document.getElementById('redactChars').value.trim()
@@ -10,6 +11,8 @@ document
     const statsOutput = document.getElementById('stats')
 
     let redactedText = redactrEngine(messageField, wordsField, redactCharsField)
+    const endtime = performance.now()
+    const timeTaken = endtime - startTime
 
     if (redactedText) {
       redactrOutput.innerHTML = `<h4><strong>REDACTED WORD:</strong></h4> <p>${redactedText}</p>`
@@ -23,7 +26,8 @@ document
     let stats = `<h4><strong>REDACTR STATS:</strong><h4>
                   <p>Scanned Word Count: ${totalWordCount}</p>
                   <p>Matched Word Count: ${matchedWordCount}</p>
-                  <p>Scrambled Character Count: ${scrambledWordCharCount}</p>`
+                  <p>Scrambled Character Count: ${scrambledWordCharCount}</p>
+                  <p>Process Time: ${timeTaken}`
 
     if (totalWordCount > 0) {
       statsOutput.innerHTML = stats
