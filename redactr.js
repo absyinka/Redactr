@@ -3,37 +3,26 @@ document
   .addEventListener('click', function (event) {
     event.preventDefault()
 
-    let message = document.getElementById('message').value
+    const messageField = document.getElementById('message').value
+    const wordsField = document.getElementById('words').value
+    const redactCharsField = document.getElementById('redactChars').value
+    const redactrOutput = document.getElementById('redactrOutput')
+    const statsOutput = document.getElementById('stats')
 
-    let wordsToScramble = document.getElementById('words').value
+    let redactedText = redactrEngine(messageField, wordsField, redactCharsField)
 
-    let wordSplit = wordsToScramble.split(',')
-
-    let redactStringCharacters =
-      document.getElementById('redactCharacters').value
-
-    let redactedWord = replaceWordsWithAsterisks(
-      message,
-      wordSplit,
-      redactStringCharacters
-    )
-    let output = document.getElementById('redactrOutput')
-    let statsOutput = document.getElementById('stats')
-
-    if (redactedWord) {
-      output.innerHTML = `<h4><strong>REDACTED WORD:</strong></h4> <p>${redactedWord}</p>`
-      output.style.visibility = 'visible'
-      output.style.color = '#f33'
+    if (redactedText) {
+      redactrOutput.innerHTML = `<h4><strong>REDACTED WORD:</strong></h4> <p>${redactedText}</p>`
+      redactrOutput.style.visibility = 'visible'
+      redactrOutput.style.color = '#f33'
     }
 
-    const { totalWordCount, matchedWordCount, scrambledWordCharCount } = getStats(
-      message,
-      wordSplit
-    )
+    const { totalWordCount, matchedWordCount, scrambledWordCharCount } =
+      getStats(messageField, wordsField)
 
     let stats = `<h4><strong>REDACTR STATS:</strong><h4>
                   <p>Scanned Word Count: ${totalWordCount}</p>
-                  <p>Matched Word Count:${matchedWordCount}</p>
+                  <p>Matched Word Count: ${matchedWordCount}</p>
                   <p>Scrambled Character Count: ${scrambledWordCharCount}</p>`
 
     if (totalWordCount > 0) {
@@ -43,43 +32,64 @@ document
     }
   })
 
-function replaceWordsWithAsterisks(
-  inputText,
-  wordsToReplace,
-  replacementString
-) {
-  var regexPattern = wordsToReplace
-                        .map((word) => word.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'))
-                        .join('|')
-  var regex = new RegExp(regexPattern, 'gi') // 'gi' for global and case-insensitive matching
+function redactrEngine(originalText, redactedWordsString, redactValue) {
+  const textWithoutSpecialChar = cleanWord(originalText)
 
-  if (isNullOrWhitespace(replacementString)) {
-    replacementString = '***'
+  const wordsToRedact = redactedWordsString.split(',')
+
+  const trimmedWordsToRedact = wordsToRedact.map((word) => word.trim())
+
+  if (isNullOrWhitespace(redactValue)) {
+    redactValue = '***'
   }
 
-  var resultText = inputText.replace(regex, replacementString)
+  const regexPattern = trimmedWordsToRedact
+    .map((word) => word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'))
+    .join('|')
 
-  return resultText
+   const redactedText = originalText.replace(
+     new RegExp(`\\b(${regexPattern})\\b`, 'gi'),
+     redactValue
+   )
+  // const regex = new RegExp(regexPattern, 'gi')
+  // const redactedText = textWithoutSpecialChar.replace(regex, redactValue)
+
+  return redactedText
 }
 
-function getStats(originalText, wordsToScramble) {
-  const originalWords = originalText.split(/\s+/)
-  const reversedText = wordsToScramble.join('')
-  const redactedText = reversedText
+function getStats(originalText, redactedWordsString) {
+  const cleanedWord = cleanWord(originalText)
+  const originalWords = cleanedWord.split(/\s+/)
+  const cleanRedactedText = cleanWord(redactedWordsString)
+  const arrayOfWordsToScramble = cleanRedactedText.split(/\s+/)
+  const redactedText = removeSpecialCharsAndWhitespace(cleanRedactedText)
 
   let totalWordCount = originalWords.length
-  let matchedWordCount = countMatchingItems(originalWords, wordsToScramble)
+  let matchedWordCount = countMatchingItems(
+    originalWords,
+    arrayOfWordsToScramble
+  )
+
   let scrambledWordCharCount = redactedText.length
 
   return { totalWordCount, matchedWordCount, scrambledWordCharCount }
 }
 
+function removeSpecialCharsAndWhitespace(sentence) {
+  const regex = /[-\/\\^$*+?.()|[\]{}_\s]/g
+  const cleanedSentence = sentence.replace(regex, '')
+  return cleanedSentence
+}
+
 function countMatchingItems(array1, array2) {
   let count = 0
 
-  for (const item of array1) {
-    if (array2.includes(item)) {
-      count++
+  for (const item1 of array1) {
+    for (const item2 of array2) {
+      if (item1.toLowerCase() === item2.toLowerCase()) {
+        count++
+        break
+      }
     }
   }
 
@@ -88,4 +98,9 @@ function countMatchingItems(array1, array2) {
 
 function isNullOrWhitespace(input) {
   return input === null || input.trim() === ''
+}
+
+function cleanWord(word) {
+  const cleanedWord = word.replace(/[!@#$%^&*()_+{}\[\]:;"'<>,.?~\\/-]/g, ' ')
+  return cleanedWord
 }
