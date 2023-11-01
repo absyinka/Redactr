@@ -17,18 +17,19 @@
 
         <div class="mb-5">
             <label for="message" class="mb-3">Message</label>
-            <textarea id="message" cols="30" rows="10"></textarea>
+            <textarea class="rinput" id="message" cols="30" rows="10"></textarea>
+            <span class="errorSpan" style="color: red;"></span>
         </div>
 
         <div class="mb-5">
             <label for="words" class="mb-3">Word(s) to redact</label>
-            <input type="text" id="words" placeholder="Enter words to redact separated by comma">
+            <input type="text" class="rinput" id="words" placeholder="Enter words to redact separated by comma">
+            <span class="errorSpan" style="color: red;"></span>
         </div>
 
         <div class="mb-5">
             <label for="redactChars" class="mb-3">Replacement string</label>
-            <input type="text" id="redactChars"
-                placeholder="Enter string to redact words. e.g: *** or ???? or anon">
+            <input type="text" id="redactChars" placeholder="e.g. ***, ??? or anon">
         </div>
 
         <button type="button" id="submitButton" class="mb-lg">Redact Now</button>

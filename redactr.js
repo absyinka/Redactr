@@ -1,40 +1,55 @@
-document
-  .getElementById('submitButton')
-  .addEventListener('click', function (event) {
-    event.preventDefault()
+const inputElements = document.querySelectorAll('.rinput')
+const errorSpans = document.querySelectorAll('.errorSpan')
+const submitButton = document.getElementById('submitButton')
 
-    const startTime = performance.now()
-    const messageField = document.getElementById('message').value.trim()
-    const wordsField = document.getElementById('words').value.trim()
-    const redactCharsField = document.getElementById('redactChars').value.trim()
-    const redactrOutput = document.getElementById('redactrOutput')
-    const statsOutput = document.getElementById('stats')
-
-    let redactedText = redactrEngine(messageField, wordsField, redactCharsField)
-    const endtime = performance.now()
-    const timeTaken = endtime - startTime
-
-    if (redactedText) {
-      redactrOutput.innerHTML = `<h4><strong>REDACTED WORD:</strong></h4> <p>${redactedText}</p>`
-      redactrOutput.style.visibility = 'visible'
-      redactrOutput.style.color = '#f33'
+inputElements.forEach((inputElement, index) => {
+  inputElement.addEventListener('blur', () => {
+    if (validateInput(inputElement)) {
+      errorSpans[index].textContent = ''
     }
+    updateSubmitButtonState()
+  })
+})
 
-    const { totalWordCount, matchedWordCount, scrambledWordCharCount } =
-      getStats(messageField, wordsField)
+submitButton.addEventListener('click', function (event) {
+  event.preventDefault()
 
-    let stats = `<h4><strong>REDACTR STATS:</strong><h4>
+  const startTime = performance.now()
+  const messageField = document.getElementById('message').value.trim()
+  const wordsField = document.getElementById('words').value.trim()
+  const redactCharsField = document.getElementById('redactChars').value.trim()
+  const redactrOutput = document.getElementById('redactrOutput')
+  const statsOutput = document.getElementById('stats')
+
+  let redactedText = redactrEngine(messageField, wordsField, redactCharsField)
+  const endtime = performance.now()
+  const timeTaken = endtime - startTime
+
+  if (redactedText) {
+    redactrOutput.innerHTML = `<h4><strong>REDACTED WORD:</strong></h4> <p>${redactedText}</p>`
+    redactrOutput.style.visibility = 'visible'
+    redactrOutput.style.color = '#f33'
+  }
+
+  const { totalWordCount, matchedWordCount, scrambledWordCharCount } = getStats(
+    messageField,
+    wordsField
+  )
+
+  let stats = `<h4><strong>REDACTR STATS:</strong><h4>
                   <p>Scanned Word Count: ${totalWordCount}</p>
                   <p>Matched Word Count: ${matchedWordCount}</p>
                   <p>Scrambled Character Count: ${scrambledWordCharCount}</p>
                   <p>Process Time: ${timeTaken.toFixed(3)} milliseconds</p>`
 
-    if (totalWordCount > 0) {
-      statsOutput.innerHTML = stats
-      statsOutput.style.visibility = 'visible'
-      statsOutput.style.color = 'green'
-    }
-  })
+  if (totalWordCount > 0) {
+    statsOutput.innerHTML = stats
+    statsOutput.style.visibility = 'visible'
+    statsOutput.style.color = 'green'
+  }
+
+  updateSubmitButtonState()
+})
 
 function redactrEngine(originalText, redactedWordsString, redactValue) {
   const textWithoutSpecialChar = cleanWord(originalText)
@@ -105,4 +120,24 @@ function isNullOrWhitespace(input) {
 function cleanWord(word) {
   const cleanedWord = word.replace(/[!@#$%^&*()_+{}\[\]:;"'<>,.?~\\/-]/g, ' ')
   return cleanedWord
+}
+
+function validateInput(inputField) {
+  const trimmedValue = inputField.value.trim()
+
+  if (trimmedValue === '') {
+    const index = [...inputElements].indexOf(inputField)
+    errorSpans[index].textContent =
+      'Input is empty or contains only whitespace.'
+    return false
+  }
+
+  return true
+}
+
+function updateSubmitButtonState() {
+  const allFieldsFilled = [...inputElements].every(
+    (inputElement) => inputElement.value.trim() !== ''
+  )
+  submitButton.disabled = !allFieldsFilled
 }
