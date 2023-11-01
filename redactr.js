@@ -47,12 +47,10 @@ function redactrEngine(originalText, redactedWordsString, redactValue) {
     .map((word) => word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'))
     .join('|')
 
-   const redactedText = originalText.replace(
-     new RegExp(`\\b(${regexPattern})\\b`, 'gi'),
-     redactValue
-   )
-  // const regex = new RegExp(regexPattern, 'gi')
-  // const redactedText = textWithoutSpecialChar.replace(regex, redactValue)
+  const redactedText = originalText.replace(
+    new RegExp(`\\b(${regexPattern})\\b`, 'gi'),
+    redactValue
+  )
 
   return redactedText
 }
