@@ -1,2 +1,2 @@
 # Redactr
-Solution for scrambling portions of the text
+Solution for scrambling portions of any given text
