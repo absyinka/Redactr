@@ -3,9 +3,9 @@ document
   .addEventListener('click', function (event) {
     event.preventDefault()
 
-    const messageField = document.getElementById('message').value
-    const wordsField = document.getElementById('words').value
-    const redactCharsField = document.getElementById('redactChars').value
+    const messageField = document.getElementById('message').value.trim()
+    const wordsField = document.getElementById('words').value.trim()
+    const redactCharsField = document.getElementById('redactChars').value.trim()
     const redactrOutput = document.getElementById('redactrOutput')
     const statsOutput = document.getElementById('stats')
 
@@ -35,7 +35,7 @@ document
 function redactrEngine(originalText, redactedWordsString, redactValue) {
   const textWithoutSpecialChar = cleanWord(originalText)
 
-  const wordsToRedact = redactedWordsString.trimEnd().split(',')
+  const wordsToRedact = redactedWordsString.split(',')
 
   const trimmedWordsToRedact = wordsToRedact.map((word) => word.trim())
 
