@@ -27,7 +27,7 @@ document
                   <p>Scanned Word Count: ${totalWordCount}</p>
                   <p>Matched Word Count: ${matchedWordCount}</p>
                   <p>Scrambled Character Count: ${scrambledWordCharCount}</p>
-                  <p>Process Time: ${timeTaken}</p>`
+                  <p>Process Time: ${timeTaken.toFixed(3)} milliseconds</p>`
 
     if (totalWordCount > 0) {
       statsOutput.innerHTML = stats
