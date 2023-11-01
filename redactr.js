@@ -35,7 +35,7 @@ document
 function redactrEngine(originalText, redactedWordsString, redactValue) {
   const textWithoutSpecialChar = cleanWord(originalText)
 
-  const wordsToRedact = redactedWordsString.split(',')
+  const wordsToRedact = redactedWordsString.trimEnd().split(',')
 
   const trimmedWordsToRedact = wordsToRedact.map((word) => word.trim())
 
